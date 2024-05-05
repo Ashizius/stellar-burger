@@ -1,11 +1,24 @@
-import { FC, useMemo } from 'react';
+import { FC, useLayoutEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { useDispatch, useSelector } from '../../services/store';
+import {
+  selectViewOrder,
+  viewOrderThunk
+} from '../../services/slices/ordersListSlice';
+import { useParams } from 'react-router-dom';
+import { selectIngredients } from '../../services/slices/ingredientsSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
+  const dispatch = useDispatch();
+  const param = useParams<{ number: string }>();
+  const paramNumber = Number.parseInt(param.number ? param.number : '');
+  useLayoutEffect(() => {
+    paramNumber ? dispatch(viewOrderThunk(paramNumber)) : null;
+  }, [paramNumber]);
+  /*const orderData = {
     createdAt: '',
     ingredients: [],
     _id: '',
@@ -13,9 +26,10 @@ export const OrderInfo: FC = () => {
     name: '',
     updatedAt: 'string',
     number: 0
-  };
-
-  const ingredients: TIngredient[] = [];
+  };*/
+  const orderData = useSelector(selectViewOrder);
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
+  console.log(ingredients, orderData);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
