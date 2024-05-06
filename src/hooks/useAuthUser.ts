@@ -1,12 +1,10 @@
 import { useDispatch, useSelector } from '../services/store';
 import {
   selectFormError,
-  selectUserData,
   selectUserSending
 } from '../services/slices/userSlice';
 import { validateForm } from '../utils/validateForm';
 import { SyntheticEvent } from 'react';
-import { AsyncThunk } from '@reduxjs/toolkit';
 
 export function useAuthUser<T extends object>(
   formData: T,
@@ -21,7 +19,7 @@ export function useAuthUser<T extends object>(
     if (inputError.isEmpty) {
       inputError.error = 'заполните все поля';
     } else {
-      callback();
+      isLoading || callback();
     }
   };
   return {

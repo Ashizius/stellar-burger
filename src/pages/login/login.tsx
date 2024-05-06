@@ -1,10 +1,6 @@
-import { FC, useLayoutEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { LoginUI } from '@ui-pages';
-import {
-  getUserThunk,
-  loginUserThunk,
-  selectUserSending
-} from '../../services/slices/userSlice';
+import { loginUserThunk } from '../../services/slices/userSlice';
 import { useAuthUser } from '../../hooks/useAuthUser';
 import { useDispatch, useSelector } from '../../services/store';
 import { getCookie } from '../../utils/cookie';

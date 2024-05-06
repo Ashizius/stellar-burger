@@ -42,11 +42,13 @@ const ordersListSlice = createSlice({
     selectOrdersList: (sliceState) => sliceState.orders,
     selectViewOrder: (sliceState) => sliceState.order,
     selectViewOrderError: (sliceState) => sliceState.orderError,
+    selectViewOrderLoading: (sliceState) => sliceState.orderRequest,
+    selectOrdersListLoading: (sliceState) => sliceState.ordersRequest,
     selectOrdersListError: (sliceState) => sliceState.orderError
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getOrdersThunk.pending, (state, action) => {
+      .addCase(getOrdersThunk.pending, (state) => {
         state.ordersRequest = true;
         state.ordersError = null;
       })
@@ -59,7 +61,7 @@ const ordersListSlice = createSlice({
         state.orders = action.payload;
       });
     builder
-      .addCase(viewOrderThunk.pending, (state, action) => {
+      .addCase(viewOrderThunk.pending, (state) => {
         state.orderRequest = true;
         state.orderError = null;
       })
@@ -69,7 +71,6 @@ const ordersListSlice = createSlice({
       })
       .addCase(viewOrderThunk.fulfilled, (state, action) => {
         state.ordersRequest = false;
-        console.log(action.payload.orders);
         state.order =
           action.payload.orders.length > 0 ? action.payload.orders[0] : null;
       });
@@ -78,5 +79,10 @@ const ordersListSlice = createSlice({
 
 export default ordersListSlice.reducer;
 
-export const { selectOrdersList, selectViewOrder } = ordersListSlice.selectors;
+export const {
+  selectOrdersList,
+  selectViewOrder,
+  selectViewOrderLoading,
+  selectOrdersListLoading
+} = ordersListSlice.selectors;
 //export const {  } = ordersListSlice.actions;

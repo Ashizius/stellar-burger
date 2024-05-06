@@ -7,7 +7,6 @@ import { useSelector } from '../../services/store';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
 
 export const BurgerIngredients: FC = () => {
-  /** TODO: взять переменные из стора */
   const ingredients = useSelector(selectIngredients);
   const { buns, mains, sauces } = useMemo(
     () =>
@@ -73,8 +72,6 @@ export const BurgerIngredients: FC = () => {
     if (tab === 'sauce')
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  //return null;
 
   return (
     <BurgerIngredientsUI

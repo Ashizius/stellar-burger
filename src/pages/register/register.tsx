@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { registerUserThunk } from '../../services/slices/userSlice';
-import { useDispatch, useSelector } from '../../services/store';
+import { useDispatch } from '../../services/store';
 import { useAuthUser } from '../../hooks/useAuthUser';
 
 export const Register: FC = () => {

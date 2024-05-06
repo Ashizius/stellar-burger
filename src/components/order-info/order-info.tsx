@@ -5,31 +5,22 @@ import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   selectViewOrder,
+  selectViewOrderLoading,
   viewOrderThunk
 } from '../../services/slices/ordersListSlice';
 import { useParams } from 'react-router-dom';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
   const dispatch = useDispatch();
   const param = useParams<{ number: string }>();
   const paramNumber = Number.parseInt(param.number ? param.number : '');
   useLayoutEffect(() => {
     paramNumber ? dispatch(viewOrderThunk(paramNumber)) : null;
   }, [paramNumber]);
-  /*const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };*/
   const orderData = useSelector(selectViewOrder);
+  const orderLoading = useSelector(selectViewOrderLoading);
   const ingredients: TIngredient[] = useSelector(selectIngredients);
-  console.log(ingredients, orderData);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
@@ -71,9 +62,9 @@ export const OrderInfo: FC = () => {
       date,
       total
     };
-  }, [orderData, ingredients]);
+  }, [orderData, ingredients, orderLoading]);
 
-  if (!orderInfo) {
+  if (!orderInfo || orderLoading) {
     return <Preloader />;
   }
 

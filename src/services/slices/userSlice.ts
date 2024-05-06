@@ -32,17 +32,10 @@ const initialState: UserState = {
   isAuthChecked: false,
   isAuthenticated: false,
   data: null,
-  //  loginUserError: null,
   authUserError: null,
   formError: null
 };
 
-/*
-export const loginUserThunk = createAsyncThunk(
-  'user/login',
-  async (data: TLoginData) => await loginUserApi(data)
-); //dispatch(loginUser({email:'',password:''}));
-*/
 export const getUserThunk = createAsyncThunk(
   'user/getUserByToken',
   async () => await getUserApi()
@@ -99,14 +92,14 @@ const userSlice = createSlice({
       state.isAuthChecked = true;
       state.isAuthenticated = false;
       state.data = null;
-      console.log('rejected');
       state.authUserError = action.error;
+      deleteCookie('accessToken');
+      localStorage.removeItem('refreshToken');
     });
     builder.addCase(getUserThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isAuthChecked = true;
       state.isAuthenticated = true;
-      console.log('fulfilled');
       state.data = action.payload.user;
     });
     builder.addCase(registerUserThunk.pending, (state) => {
@@ -182,44 +175,3 @@ export const {
   selectUserAuthChecked
 } = userSlice.selectors;
 export default userSlice.reducer;
-
-/*
-isAuthChecked: false, // флаг для статуса проверки токена пользователя
-  isAuthenticated: false;
-  data: null,
-  loginUserError: null,
-  loginUserRequest: false,
-export const loginUser = createAsyncThunk(
-  'user/loginUser',
-  async ({ email, password }: Omit<TRegisterData, 'name'>) => {
-    const data = await loginUserApi({ email, password }, {rejectWithValue})
-        if (!data?.success) {
-                return rejectWithValue(data);
-        }
-        setCookie('accessToken', data.accessToken);
-        localSotrage.setItem('refreshToken', data.refreshToken);
-        return data.user;
-  }
-);
-
-export const userSlice = createSlice({
-  name: 'user',
-  initialState,
-    extraReducers: (builder) => {
-      builder
-            .addCase(loginUser.pending, (state) => {
-          state.loginUserRequest = true;
-          state.loginUserError = null;
-            })
-      .addCase(loginUser.rejected, (state, action) => {
-            state.loginUserRequest = false;
-          state.loginUserError = action.payload;
-          state.isAuthChecked = true;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-              state.data = action.payload.user;
-          state.loginUserRequest = false;
-                state.isAuthenticated = true;
-          state.isAuthChecked = true;
-      }
-*/

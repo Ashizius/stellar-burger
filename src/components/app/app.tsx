@@ -21,9 +21,7 @@ import { getCookie } from '../../utils/cookie';
 import {
   authChecked,
   getUserThunk,
-  selectUserAuthChecked,
-  selectUserAuthenticated,
-  selectUserData
+  selectUserAuthChecked
 } from '../../services/slices/userSlice';
 import {
   getIngredientsThunk,
@@ -44,27 +42,21 @@ const App = () => {
         dispatch(getUserThunk());
       } else {
         dispatch(authChecked());
-      } /*.then(
-        dispatch()
-      );*/
+      }
     }
-    if (!isIngredientsInit && !isIngredientsLoading)
+    if (!isIngredientsInit && !isIngredientsLoading) {
       dispatch(getIngredientsThunk());
+    }
   }, []);
-  /*const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const isLoading = useSelector(selectUserPending);*/
   const backgroundLocation = location.state?.background;
   const closeModal = useCallback(() => {
     navigate(backgroundLocation);
   }, [backgroundLocation]);
-  console.log('location.state', location.state);
   const lastlink = location.pathname.split('/');
 
   return (
     <div className={styles.app}>
       <AppHeader />
-
       <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />

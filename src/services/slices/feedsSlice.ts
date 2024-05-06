@@ -71,5 +71,5 @@ export const {
   selectFeedsTotalToday,
   selectFeedsError
 } = feedsSlice.selectors;
-//export const { init } = ingredientsSlice.actions;
+
 export default feedsSlice.reducer;

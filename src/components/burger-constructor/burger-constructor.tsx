@@ -14,7 +14,6 @@ import {
 } from '../../services/slices/orderBurgerSlice';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const orderRequest = useSelector(selectOrderRequest);
   const constructorItems = useSelector(selectBurger);
   const orderModalData: TOrder | null = useSelector(selectOrderModalData);
@@ -41,8 +40,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  //return null;
 
   return (
     <BurgerConstructorUI
