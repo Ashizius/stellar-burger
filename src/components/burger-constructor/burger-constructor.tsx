@@ -12,15 +12,24 @@ import {
   selectOrderModalData,
   selectOrderRequest
 } from '../../services/slices/orderBurgerSlice';
+import { selectUserAuthenticated } from '../../services/slices/userSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
+  const location = useLocation();
   const orderRequest = useSelector(selectOrderRequest);
   const constructorItems = useSelector(selectBurger);
   const orderModalData: TOrder | null = useSelector(selectOrderModalData);
+  const isAuthenticated = useSelector(selectUserAuthenticated);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: location } });
+      return;
+    }
     dispatch(orderBurgerThunk(constructorItems)).then(() => {
       dispatch(clearBurger());
     });

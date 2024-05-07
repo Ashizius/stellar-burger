@@ -20,6 +20,7 @@ interface TOrdersListState {
   order: TOrder | null;
   orders: TOrder[];
   orderRequest: boolean;
+  orderNumber: number | null;
   ordersRequest: boolean;
   ordersError: SerializedError | null;
   orderError: SerializedError | null;
@@ -27,6 +28,7 @@ interface TOrdersListState {
 
 const initialState: TOrdersListState = {
   order: null,
+  orderNumber: null,
   orders: [],
   orderRequest: false,
   ordersRequest: false,
@@ -42,6 +44,7 @@ const ordersListSlice = createSlice({
     selectOrdersList: (sliceState) => sliceState.orders,
     selectViewOrder: (sliceState) => sliceState.order,
     selectViewOrderError: (sliceState) => sliceState.orderError,
+    selectViewOrderNumber: (sliceState) => sliceState.orderNumber,
     selectViewOrderLoading: (sliceState) => sliceState.orderRequest,
     selectOrdersListLoading: (sliceState) => sliceState.ordersRequest,
     selectOrdersListError: (sliceState) => sliceState.orderError
@@ -73,6 +76,8 @@ const ordersListSlice = createSlice({
         state.ordersRequest = false;
         state.order =
           action.payload.orders.length > 0 ? action.payload.orders[0] : null;
+        state.orderNumber = action.payload.orders[0].number;
+        console.log(action.payload.orders[0]);
       });
   }
 });
@@ -83,6 +88,7 @@ export const {
   selectOrdersList,
   selectViewOrder,
   selectViewOrderLoading,
-  selectOrdersListLoading
+  selectOrdersListLoading,
+  selectViewOrderNumber
 } = ordersListSlice.selectors;
 //export const {  } = ordersListSlice.actions;
