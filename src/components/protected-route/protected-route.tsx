@@ -1,10 +1,9 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from '../../services/store';
+import { useSelector } from '../../services/store';
 import {
   selectUserAuthChecked,
   selectUserAuthError,
-  selectUserAuthenticated,
-  selectUserLoading
+  selectUserData
 } from '../../services/slices/userSlice';
 import { Preloader } from '@ui';
 
@@ -18,12 +17,11 @@ export const ProtectedRoute = ({
   onlyUnauth
 }: ProtectedRouteProps) => {
   const location = useLocation();
-  const isAuthenticated = useSelector(selectUserAuthenticated);
-  const isLoading = useSelector(selectUserLoading);
   const isAuthChecked = useSelector(selectUserAuthChecked);
+  const user = useSelector(selectUserData);
   const authError = useSelector(selectUserAuthError);
 
-  if (isLoading || !isAuthChecked) {
+  if (!isAuthChecked) {
     // пока идёт чекаут пользователя, показываем прелоадер
     return <Preloader />;
   }
@@ -39,12 +37,12 @@ export const ProtectedRoute = ({
     );
   }
 
-  if (!onlyUnauth && !isAuthenticated) {
+  if (!onlyUnauth && !user) {
     // если пользователь на странице авторизации и данных в хранилище нет, то делаем редирект
     return <Navigate to='/login' state={{ from: location }} />;
   }
 
-  if (onlyUnauth && isAuthenticated) {
+  if (onlyUnauth && user) {
     // если пользователь на странице авторизации и данные есть в хранилище
     return <Navigate replace to={location.state?.from || '/'} />;
   }
