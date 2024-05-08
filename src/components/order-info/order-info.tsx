@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from '../../services/store';
 import {
   selectViewOrder,
   selectViewOrderLoading,
-  selectViewOrderNumber,
-  viewOrderThunk
+  selectViewOrderNumber
 } from '../../services/slices/ordersListSlice';
 import { useParams } from 'react-router-dom';
 import { selectIngredients } from '../../services/slices/ingredientsSlice';
+import { viewOrderThunk } from '../../services/actions';
 
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch();

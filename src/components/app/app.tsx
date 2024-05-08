@@ -18,13 +18,15 @@ import { useDispatch, useSelector } from '../../services/store';
 import { ProtectedRoute } from '../protected-route';
 import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { getCookie } from '../../utils/cookie';
-import { selectUserAuthChecked } from '../../services/slices/userSlice';
 import {
-  getIngredientsThunk,
+  selectUserAuthChecked,
+  selectUserSending
+} from '../../services/slices/userSlice';
+import {
   selectIngredientsInit,
   selectIngredientsLoading
 } from '../../services/slices/ingredientsSlice';
-import { getUserThunk } from '../../services/actions';
+import { getIngredientsThunk, getUserThunk } from '../../services/actions';
 
 const App = () => {
   const location = useLocation();
@@ -33,8 +35,9 @@ const App = () => {
   const isAuthChecked = useSelector(selectUserAuthChecked);
   const isIngredientsInit = useSelector(selectIngredientsInit);
   const isIngredientsLoading = useSelector(selectIngredientsLoading);
+  const isLoading = useSelector(selectUserSending);
   useLayoutEffect(() => {
-    if (!isAuthChecked) {
+    if (!isAuthChecked && !isLoading) {
       dispatch(getUserThunk());
     }
     if (!isIngredientsInit && !isIngredientsLoading) {

@@ -1,20 +1,12 @@
-import {
-  TLoginData,
-  TRegisterData,
-  getUserApi,
-  loginUserApi,
-  logoutApi,
-  registerUserApi,
-  updateUserApi
-} from '@api';
-import {
-  PayloadAction,
-  SerializedError,
-  createAsyncThunk,
-  createSlice
-} from '@reduxjs/toolkit';
+import { PayloadAction, SerializedError, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
+import {
+  loginUserThunk,
+  logoutThunk,
+  registerUserThunk,
+  updateUserThunk
+} from '../actions';
 
 export interface UserState {
   isSending: boolean;
@@ -32,37 +24,13 @@ const initialState: UserState = {
   formError: null
 };
 
-/*export const getUserThunk = createAsyncThunk(
-  'user/getUserByToken',
-  async () => await getUserApi()
-);*/
-
-export const logoutThunk = createAsyncThunk(
-  'user/logoutUser',
-  async () => await logoutApi()
-);
-
-export const registerUserThunk = createAsyncThunk(
-  'user/register',
-  async ({ name, email, password }: TRegisterData) =>
-    await registerUserApi({ name, email, password })
-);
-
-export const loginUserThunk = createAsyncThunk(
-  'user/login',
-  async ({ email, password }: TLoginData) =>
-    await loginUserApi({ email, password })
-);
-
-export const updateUserThunk = createAsyncThunk(
-  'user/update',
-  async (user: Partial<TRegisterData>) => await updateUserApi(user)
-);
-
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setSending: (state, action: PayloadAction<boolean>) => {
+      state.isSending = action.payload;
+    },
     setAuthChecked: (state) => {
       state.isAuthChecked = true;
     },
@@ -71,6 +39,11 @@ const userSlice = createSlice({
     },
     setUserAuthError: (state, action: PayloadAction<SerializedError>) => {
       state.authUserError = action.payload;
+    },
+    logout: (state) => {
+      deleteCookie('accessToken');
+      localStorage.removeItem('refreshToken');
+      state.data = null;
     }
   },
   selectors: {
@@ -129,7 +102,7 @@ const userSlice = createSlice({
       state.isSending = false;
       state.formError = action.error;
     });
-    builder.addCase(logoutThunk.fulfilled, (state, action) => {
+    builder.addCase(logoutThunk.fulfilled, (state) => {
       state.isSending = false;
       state.data = null;
       state.isAuthChecked = true;
@@ -138,7 +111,8 @@ const userSlice = createSlice({
     });
   }
 });
-export const { setAuthChecked, setUser, setUserAuthError } = userSlice.actions;
+export const { setAuthChecked, setUser, setUserAuthError, logout, setSending } =
+  userSlice.actions;
 export const {
   selectUserData,
   selectUserSending,

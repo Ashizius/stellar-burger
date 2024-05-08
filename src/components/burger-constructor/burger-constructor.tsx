@@ -8,12 +8,12 @@ import {
 } from '../../services/slices/burgerConstructorSlice';
 import {
   clearOrder,
-  orderBurgerThunk,
   selectOrderModalData,
   selectOrderRequest
 } from '../../services/slices/orderBurgerSlice';
 import { selectUserData } from '../../services/slices/userSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { orderBurgerThunk } from '../../services/actions';
 
 export const BurgerConstructor: FC = () => {
   const location = useLocation();

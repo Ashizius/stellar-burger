@@ -4,11 +4,11 @@ import { TOrder } from '@utils-types';
 import { FC, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import {
-  getFeedsThunk,
   selectFeedsInit,
   selectFeedsLoading,
   selectFeedsOrders
 } from '../../services/slices/feedsSlice';
+import { getFeedsThunk } from '../../services/actions';
 
 export const Feed: FC = () => {
   const dispatch = useDispatch();

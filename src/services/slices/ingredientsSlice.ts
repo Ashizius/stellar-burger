@@ -1,10 +1,6 @@
-import { getIngredientsApi } from '@api';
-import {
-  SerializedError,
-  createAsyncThunk,
-  createSlice
-} from '@reduxjs/toolkit';
+import { SerializedError, createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
+import { getIngredientsThunk } from '../actions';
 
 export interface IngredientsState {
   isInit: boolean;
@@ -19,11 +15,6 @@ const initialState: IngredientsState = {
   ingredients: [],
   error: null
 };
-
-export const getIngredientsThunk = createAsyncThunk('user/get', async () => {
-  const ingredients = await getIngredientsApi();
-  return ingredients;
-});
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',

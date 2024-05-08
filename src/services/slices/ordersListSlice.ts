@@ -1,20 +1,6 @@
-import { getOrderByNumberApi, getOrdersApi } from '@api';
-import {
-  SerializedError,
-  createAsyncThunk,
-  createSlice
-} from '@reduxjs/toolkit';
+import { SerializedError, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-
-export const viewOrderThunk = createAsyncThunk(
-  'orders/getOrderByNumber',
-  async (id: number) => await getOrderByNumberApi(id)
-);
-
-export const getOrdersThunk = createAsyncThunk(
-  'orders/getAll',
-  async () => await getOrdersApi()
-);
+import { getOrdersThunk, viewOrderThunk } from '../actions';
 
 interface TOrdersListState {
   order: TOrder | null;

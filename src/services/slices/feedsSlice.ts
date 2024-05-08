@@ -1,11 +1,6 @@
-import { getFeedsApi } from '@api';
-import {
-  PayloadAction,
-  SerializedError,
-  createAsyncThunk,
-  createSlice
-} from '@reduxjs/toolkit';
+import { SerializedError, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
+import { getFeedsThunk } from '../actions';
 
 export interface FeedsState {
   orders: TOrder[];
@@ -24,11 +19,6 @@ const initialState: FeedsState = {
   isLoading: false,
   error: null
 };
-
-export const getFeedsThunk = createAsyncThunk('feeds/get', async () => {
-  const ingredients = await getFeedsApi();
-  return ingredients;
-});
 
 const feedsSlice = createSlice({
   name: 'feeds',

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
-import { registerUserThunk } from '../../services/slices/userSlice';
+import { registerUserThunk } from '../../services/actions';
 import { useDispatch } from '../../services/store';
 import { useAuthUser } from '../../hooks/useAuthUser';
 

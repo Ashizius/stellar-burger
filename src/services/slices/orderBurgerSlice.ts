@@ -1,11 +1,6 @@
-import { orderBurgerApi } from '@api';
-import {
-  SerializedError,
-  createAsyncThunk,
-  createSlice
-} from '@reduxjs/toolkit';
-import { TBurger } from './burgerConstructorSlice';
+import { SerializedError, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
+import { orderBurgerThunk } from '../actions';
 
 interface TOrderState {
   order: TOrder | null;
@@ -18,18 +13,6 @@ const initialState: TOrderState = {
   orderRequest: false,
   orderError: null
 };
-
-export const orderBurgerThunk = createAsyncThunk(
-  'orderBurger/burger',
-  async (burger: TBurger) => {
-    const ingredientsIds = burger.ingredients.map(
-      (ingredient) => ingredient._id
-    );
-    burger.bun ? ingredientsIds.push(burger.bun._id, burger.bun._id) : null;
-    const order = await orderBurgerApi(ingredientsIds);
-    return order;
-  }
-);
 
 const orderBurgerSlice = createSlice({
   name: 'orderBurger',
