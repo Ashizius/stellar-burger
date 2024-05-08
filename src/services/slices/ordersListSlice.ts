@@ -63,7 +63,6 @@ const ordersListSlice = createSlice({
         state.order =
           action.payload.orders.length > 0 ? action.payload.orders[0] : null;
         state.orderNumber = action.payload.orders[0].number;
-        console.log(action.payload.orders[0]);
       });
   }
 });
@@ -77,4 +76,3 @@ export const {
   selectOrdersListLoading,
   selectViewOrderNumber
 } = ordersListSlice.selectors;
-//export const {  } = ordersListSlice.actions;

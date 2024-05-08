@@ -27,25 +27,20 @@ export const getUserThunk = createAsyncThunk(
   'user/getUserByToken',
   async (_, { dispatch }) => {
     if (getCookie('accessToken')) {
-      console.log('token');
       dispatch(setSending(true));
       getUserApi()
         .then((data) => {
-          console.log('user:', data.user);
           dispatch(setUser(data.user));
         })
         .catch((error) => {
-          console.log('catch:', error);
           dispatch(setUserAuthError(error));
           dispatch(logout());
         })
         .finally(() => {
-          console.log('finally');
           dispatch(setAuthChecked());
           dispatch(setSending(false));
         });
     } else {
-      console.log('noToken');
       dispatch(setAuthChecked());
     }
   }
