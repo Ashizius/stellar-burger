@@ -1,25 +1,35 @@
-import { FC, useMemo } from 'react';
+import { FC, useLayoutEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { useDispatch, useSelector } from '../../services/store';
+import {
+  selectViewOrder,
+  selectViewOrderLoading,
+  selectViewOrderNumber
+} from '../../services/slices/ordersListSlice';
+import { useParams } from 'react-router-dom';
+import { selectIngredients } from '../../services/slices/ingredientsSlice';
+import { viewOrderThunk } from '../../services/actions';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const dispatch = useDispatch();
+  const param = useParams<{ number: string }>();
+  const paramNumber = Number.parseInt(param.number ? param.number : '');
+  const orderNumber = useSelector(selectViewOrderNumber);
+  useLayoutEffect(() => {
+    if (paramNumber) {
+      dispatch(viewOrderThunk(paramNumber));
+    }
+  }, [paramNumber]);
 
-  const ingredients: TIngredient[] = [];
+  const orderData = useSelector(selectViewOrder);
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
-    if (!orderData || !ingredients.length) return null;
+    if (!orderData || !ingredients.length || orderNumber !== paramNumber)
+      return null;
 
     const date = new Date(orderData.createdAt);
 
