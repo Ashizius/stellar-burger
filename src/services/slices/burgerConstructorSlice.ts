@@ -53,12 +53,11 @@ const burgerConstructorSlice = createSlice({
       );
       if (index !== null) {
         let newPosition = index + action.payload.direction;
-        newPosition =
-          newPosition > state.ingredients.length - 1
-            ? state.ingredients.length - 1
-            : newPosition < 0
-              ? 0
-              : newPosition;
+        if (newPosition > state.ingredients.length - 1) {
+          newPosition = state.ingredients.length - 1;
+        } else if (newPosition < 0) {
+          newPosition = 0;
+        }
         if (newPosition !== index) {
           const tIngredient = state.ingredients[index];
           state.ingredients[index] = state.ingredients[newPosition];
