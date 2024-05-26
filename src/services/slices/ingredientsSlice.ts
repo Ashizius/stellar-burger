@@ -9,7 +9,7 @@ export interface IngredientsState {
   error: SerializedError | null;
 }
 
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
   isInit: false,
   isLoading: false,
   ingredients: [],
@@ -31,6 +31,7 @@ const ingredientsSlice = createSlice({
       .addCase(getIngredientsThunk.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.ingredients = [];
       })
       .addCase(getIngredientsThunk.rejected, (state, action) => {
         state.isInit = true;

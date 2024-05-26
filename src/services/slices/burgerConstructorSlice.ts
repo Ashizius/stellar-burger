@@ -8,7 +8,7 @@ export type TBurger = {
   ingredients: TConstructorIngredient[];
 };
 
-const initialState: TBurger = {
+export const initialState: TBurger = {
   bun: null,
   ingredients: []
 };
@@ -21,12 +21,20 @@ const burgerConstructorSlice = createSlice({
       state.bun = null;
       state.ingredients = [];
     },
-    addIngredient: (state, action: PayloadAction<TIngredient>) => {
-      if (action.payload.type === 'bun') {
-        state.bun = action.payload;
-      } else {
-        state.ingredients.push({ ...action.payload, id: newId() });
-      }
+    addIngredient: {
+      reducer: (
+        state,
+        action: PayloadAction<TConstructorIngredient | TIngredient>
+      ) => {
+        if ('id' in action.payload) {
+          state.ingredients.push(action.payload);
+        } else {
+          state.bun = action.payload;
+        }
+      },
+      prepare: (ingredient: TIngredient, id: string) => ({
+        payload: ingredient.type === 'bun' ? ingredient : { ...ingredient, id }
+      })
     },
     removeIngredient: (
       state,

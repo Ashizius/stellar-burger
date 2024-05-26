@@ -12,7 +12,7 @@ interface TOrdersListState {
   orderError: SerializedError | null;
 }
 
-const initialState: TOrdersListState = {
+export const initialState: TOrdersListState = {
   order: null,
   orderNumber: null,
   orders: [],
@@ -44,6 +44,7 @@ const ordersListSlice = createSlice({
       .addCase(getOrdersThunk.rejected, (state, action) => {
         state.ordersRequest = false;
         state.ordersError = action.error;
+        state.orders = [];
       })
       .addCase(getOrdersThunk.fulfilled, (state, action) => {
         state.ordersRequest = false;
@@ -57,9 +58,10 @@ const ordersListSlice = createSlice({
       .addCase(viewOrderThunk.rejected, (state, action) => {
         state.orderRequest = false;
         state.orderError = action.error;
+        state.order = null;
       })
       .addCase(viewOrderThunk.fulfilled, (state, action) => {
-        state.ordersRequest = false;
+        state.orderRequest = false;
         state.order =
           action.payload.orders.length > 0 ? action.payload.orders[0] : null;
         state.orderNumber = action.payload.orders[0].number;

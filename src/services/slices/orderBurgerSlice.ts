@@ -8,7 +8,7 @@ interface TOrderState {
   orderError: SerializedError | null;
 }
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   order: null,
   orderRequest: false,
   orderError: null
@@ -21,6 +21,7 @@ const orderBurgerSlice = createSlice({
     clearOrder: (state) => {
       state.order = null;
       state.orderRequest = false;
+      state.orderError = null;
     }
   },
   selectors: {
@@ -33,6 +34,7 @@ const orderBurgerSlice = createSlice({
       .addCase(orderBurgerThunk.pending, (state, action) => {
         state.orderRequest = true;
         state.orderError = null;
+        state.order = null;
       })
       .addCase(orderBurgerThunk.rejected, (state, action) => {
         state.orderRequest = false;
