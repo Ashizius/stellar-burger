@@ -1,14 +1,11 @@
-import * as fetchApi from '../../utils/burger-api';
 import * as actionsApi from '../../services/actions';
 import store from '../../services/store';
-import rootReducer from '../../services/store';
-import { UnknownAction } from '@reduxjs/toolkit';
 
 import reducer from '../../services/slices/ingredientsSlice';
 import * as sliceApi from '../../services/slices/ingredientsSlice';
 import mockData from '../ingredients.json';
 
-const unSuccessResponse = { message: 'ошибка', name: 'ошибка' };
+import unsuccessResponse from '../unsuccessResponse.json'
 const globalFetch = global.fetch;
 afterAll(() => {
   global.fetch = globalFetch;
@@ -24,7 +21,7 @@ const appliedState = Object.assign({}, fulfilledState, {
   ingredients: expectedResult
 });
 const failedState = Object.assign({}, fulfilledState, {
-  error: unSuccessResponse
+  error: unsuccessResponse
 });
 
 describe('Cлайс с ингредиентами. Тест:', () => {
@@ -32,6 +29,7 @@ describe('Cлайс с ингредиентами. Тест:', () => {
     const newState = reducer(initialState, testedThunk.pending(''));
     expect(newState).toEqual(loadingState);
   });
+  
   test('[#2]. Результат запроса', async () => {
     const newState = reducer(
       loadingState,
@@ -39,13 +37,15 @@ describe('Cлайс с ингредиентами. Тест:', () => {
     );
     expect(newState).toEqual(appliedState);
   });
+
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
-      testedThunk.rejected(unSuccessResponse, '')
+      testedThunk.rejected(unsuccessResponse, '')
     );
     expect(newState).toEqual(failedState);
   });
+
   test('[#4]. успешный диспатч', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -56,11 +56,12 @@ describe('Cлайс с ингредиентами. Тест:', () => {
     await store.dispatch(testedThunk());
     expect(getCurrentStorePart()).toEqual(appliedState);
   });
+  
   test('[#5]. ошибка загрузки с сервера', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     await store.dispatch(testedThunk());

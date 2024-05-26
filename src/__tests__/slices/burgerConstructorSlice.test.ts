@@ -1,7 +1,3 @@
-import * as actionsApi from '../../services/actions';
-import store from '../../services/store';
-import { UnknownAction } from '@reduxjs/toolkit';
-
 import reducer from '../../services/slices/burgerConstructorSlice';
 import * as sliceApi from '../../services/slices/burgerConstructorSlice';
 import mockData from '../burger.json';

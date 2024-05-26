@@ -8,7 +8,7 @@ import mockData from '../orderBurger.json';
 import mockBurgerData from '../burger.json';
 import * as cookies from '../../utils/cookie';
 
-const unSuccessResponse = { message: 'ошибка', name: 'ошибка' };
+import unsuccessResponse from '../unsuccessResponse.json'
 const globalFetch = global.fetch;
 afterAll(() => {
   global.fetch = globalFetch;
@@ -22,7 +22,7 @@ const loadingState = Object.assign({}, initialState, { orderRequest: true });
 const fulfilledState = Object.assign({}, initialState);
 const appliedState = Object.assign({}, fulfilledState, expectedResult);
 const failedState = Object.assign({}, fulfilledState, {
-  orderError: unSuccessResponse
+  orderError: unsuccessResponse
 });
 
 const burger = mockBurgerData.burger;
@@ -42,7 +42,7 @@ describe('Заказ бургера. Тест:', () => {
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
-      testedThunk.rejected(unSuccessResponse, '', burger)
+      testedThunk.rejected(unsuccessResponse, '', burger)
     );
     expect(newState).toEqual(failedState);
   });
@@ -67,7 +67,7 @@ describe('Заказ бургера. Тест:', () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     jest.spyOn(cookies, 'getCookie').mockImplementation((text) => '123456');

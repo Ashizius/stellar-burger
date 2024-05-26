@@ -7,7 +7,7 @@ import * as sliceApi from '../../services/slices/userSlice';
 import mockData from '../user.json';
 import * as cookies from '../../utils/cookie';
 
-const unSuccessResponse = { message: 'ошибка', name: 'ошибка' };
+import unsuccessResponse from '../unsuccessResponse.json'
 const globalFetch = global.fetch;
 const globallocalStorage = global.localStorage;
 afterAll(() => {
@@ -35,7 +35,7 @@ describe('Получение пользователя по токену. Тес�
   const fulfilledState = Object.assign({}, initialState);
   const appliedState = Object.assign({}, fulfilledState, expectedResult);
   const failedState = Object.assign({}, fulfilledState, {
-    formError: unSuccessResponse
+    formError: unsuccessResponse
   });
 
   test('[#1]. Запрос на эндпоинт', async () => {
@@ -66,14 +66,14 @@ describe('Получение пользователя по токену. Тес�
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     await store.dispatch(actionsApi.getUserThunk());
     const { isSending, data, authUserError } = getCurrentStorePart();
     expect(isSending).toBe(false);
     expect(data).toBe(null);
-    expect(authUserError).toEqual(unSuccessResponse);
+    expect(authUserError).toEqual(unsuccessResponse);
   });
   test('[#4]. Отсутствие токена', async () => {
     jest.spyOn(cookies, 'getCookie').mockImplementation((text) => undefined);
@@ -105,7 +105,7 @@ describe('Регистрация пользователя. Тест:', () => {
   const fulfilledState = Object.assign({}, initialState);
   const appliedState = Object.assign({}, fulfilledState, expectedResult);
   const failedState = Object.assign({}, fulfilledState, {
-    formError: unSuccessResponse
+    formError: unsuccessResponse
   });
 
   test('[#1]. Запрос на эндпоинт', async () => {
@@ -125,7 +125,7 @@ describe('Регистрация пользователя. Тест:', () => {
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
-      testedThunk.rejected(unSuccessResponse, '', mockData.login)
+      testedThunk.rejected(unsuccessResponse, '', mockData.login)
     );
     expect(newState).toEqual(failedState);
   });
@@ -147,7 +147,7 @@ describe('Регистрация пользователя. Тест:', () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     await store.dispatch(testedThunk(mockData.login));
@@ -164,7 +164,7 @@ describe('логин пользователя. Тест:', () => {
   const fulfilledState = Object.assign({}, initialState);
   const appliedState = Object.assign({}, fulfilledState, expectedResult);
   const failedState = Object.assign({}, fulfilledState, {
-    formError: unSuccessResponse
+    formError: unsuccessResponse
   });
 
   test('[#1]. Запрос на эндпоинт', async () => {
@@ -184,7 +184,7 @@ describe('логин пользователя. Тест:', () => {
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
-      testedThunk.rejected(unSuccessResponse, '', mockData.login)
+      testedThunk.rejected(unsuccessResponse, '', mockData.login)
     );
     expect(newState).toEqual(failedState);
   });
@@ -206,7 +206,7 @@ describe('логин пользователя. Тест:', () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     await store.dispatch(testedThunk(mockData.login));
@@ -227,7 +227,7 @@ describe('обновление пользователя. Тест:', () => {
   const fulfilledState = Object.assign({}, initialState);
   const appliedState = Object.assign({}, fulfilledState, expectedResult);
   const failedState = Object.assign({}, fulfilledState, {
-    formError: unSuccessResponse
+    formError: unsuccessResponse
   });
 
   test('[#1]. Запрос на эндпоинт', async () => {
@@ -247,7 +247,7 @@ describe('обновление пользователя. Тест:', () => {
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
-      testedThunk.rejected(unSuccessResponse, '', mockData.login)
+      testedThunk.rejected(unsuccessResponse, '', mockData.login)
     );
     expect(newState).toEqual(failedState);
   });
@@ -269,7 +269,7 @@ describe('обновление пользователя. Тест:', () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     await store.dispatch(testedThunk(mockData.login));
@@ -291,7 +291,7 @@ describe('выход пользователя. Тест:', () => {
     isAuthChecked: true
   });
   const failedState = Object.assign({}, fulfilledState, {
-    formError: unSuccessResponse
+    formError: unsuccessResponse
   });
 
   test('[#1]. Запрос на эндпоинт', async () => {
@@ -308,7 +308,7 @@ describe('выход пользователя. Тест:', () => {
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
-      testedThunk.rejected(unSuccessResponse, '')
+      testedThunk.rejected(unsuccessResponse, '')
     );
     expect(newState).toEqual(failedState);
   });
@@ -330,7 +330,7 @@ describe('выход пользователя. Тест:', () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     await store.dispatch(testedThunk());
@@ -351,7 +351,7 @@ describe('редьюсеры пользователя. Тест:', () => {
   const fulfilledState = Object.assign({}, initialState);
   const appliedState = Object.assign({}, fulfilledState, expectedResult);
   const failedState = Object.assign({}, fulfilledState, {
-    authUserError: unSuccessResponse
+    authUserError: unsuccessResponse
   });
 
   test('[#1]. редьюсер отправки данных', () => {
@@ -372,7 +372,7 @@ describe('редьюсеры пользователя. Тест:', () => {
   test('[#4]. редьюсер ошибки аутентификации', () => {
     const newState = reducer(
       initialState,
-      sliceApi.setUserAuthError(unSuccessResponse)
+      sliceApi.setUserAuthError(unsuccessResponse)
     );
     expect(newState).toEqual(failedState);
   });

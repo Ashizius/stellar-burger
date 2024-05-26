@@ -7,7 +7,7 @@ import * as sliceApi from '../../services/slices/ordersListSlice';
 import mockData from '../feeds.json';
 import * as cookies from '../../utils/cookie';
 
-const unSuccessResponse = { message: 'ошибка', name: 'ошибка' };
+import unsuccessResponse from '../unsuccessResponse.json'
 const globalFetch = global.fetch;
 afterAll(() => {
   global.fetch = globalFetch;
@@ -23,7 +23,7 @@ describe('Список заказов. Тест:', () => {
   const fulfilledState = Object.assign({}, initialState);
   const appliedState = Object.assign({}, fulfilledState, expectedResult);
   const failedState = Object.assign({}, fulfilledState, {
-    ordersError: unSuccessResponse
+    ordersError: unsuccessResponse
   });
 
   test('[#1]. Запрос на эндпоинт', async () => {
@@ -40,7 +40,7 @@ describe('Список заказов. Тест:', () => {
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
-      testedThunk.rejected(unSuccessResponse, '')
+      testedThunk.rejected(unsuccessResponse, '')
     );
     expect(newState).toEqual(failedState);
   });
@@ -62,7 +62,7 @@ describe('Список заказов. Тест:', () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     jest.spyOn(cookies, 'getCookie').mockImplementation((text) => '123456');
@@ -86,7 +86,7 @@ describe('Заказ №40807. Тест:', () => {
   const fulfilledState = Object.assign({}, initialState);
   const appliedState = Object.assign({}, fulfilledState, expectedResult);
   const failedState = Object.assign({}, fulfilledState, {
-    orderError: unSuccessResponse
+    orderError: unsuccessResponse
   });
 
   test('[#1]. Запрос на эндпоинт', async () => {
@@ -105,7 +105,7 @@ describe('Заказ №40807. Тест:', () => {
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
-      testedThunk.rejected(unSuccessResponse, '', 40807)
+      testedThunk.rejected(unsuccessResponse, '', 40807)
     );
     expect(newState).toEqual(failedState);
   });
@@ -129,7 +129,7 @@ describe('Заказ №40807. Тест:', () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: false,
-        json: () => Promise.resolve(unSuccessResponse)
+        json: () => Promise.resolve(unsuccessResponse)
       })
     ) as jest.Mock;
     jest.spyOn(cookies, 'getCookie').mockImplementation((text) => '123456');
