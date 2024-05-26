@@ -5,7 +5,7 @@ import reducer from '../../services/slices/ingredientsSlice';
 import * as sliceApi from '../../services/slices/ingredientsSlice';
 import mockData from '../ingredients.json';
 
-import unsuccessResponse from '../unsuccessResponse.json'
+import unsuccessResponse from '../unsuccessResponse.json';
 const globalFetch = global.fetch;
 afterAll(() => {
   global.fetch = globalFetch;
@@ -29,7 +29,7 @@ describe('Cлайс с ингредиентами. Тест:', () => {
     const newState = reducer(initialState, testedThunk.pending(''));
     expect(newState).toEqual(loadingState);
   });
-  
+
   test('[#2]. Результат запроса', async () => {
     const newState = reducer(
       loadingState,
@@ -56,7 +56,7 @@ describe('Cлайс с ингредиентами. Тест:', () => {
     await store.dispatch(testedThunk());
     expect(getCurrentStorePart()).toEqual(appliedState);
   });
-  
+
   test('[#5]. ошибка загрузки с сервера', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({

@@ -1,4 +1,4 @@
-//import burger from '../../src/__tests__/burger.json'
+
 import ingredients from '../fixtures/ingredients.json';
 import user from '../fixtures/user.json';
 import orderBurger from '../fixtures/orderBurger.json';
@@ -154,7 +154,7 @@ describe('проверяем конструктор', () => {
       .should('exist');
   });
 
-  it('клик по модалке', () => {
+  it('открывает модалку', () => {
     cy.get(`[data-testId=${ingredients.data[4]._id}]`)
       .get(`[src="${ingredients.data[4].image}"]`)
       .click();
@@ -171,6 +171,10 @@ describe('проверяем модалки', () => {
   });
 
   it('наличие модалки', () => {
+    cy.get(`[data-testId=modal_window]`).should('exist');
+  });
+
+  it('наличие ингредиента в модалке', () => {
     cy.get(`[data-testId=modal_window]`).contains(ingredients.data[4].name).should('exist');
   });
 
@@ -272,8 +276,8 @@ describe('проверяем создание заказа незалогине�
   });
 
   it('перебрасывает обратно после логина',()=>{
-    cy.contains('E-mail').type(user.login.email);
-    cy.contains('Пароль').type(user.login.password);
+    cy.get(`input[name=email]`).type(user.login.email);
+    cy.get(`input[name=password]`).type(user.login.password);
     cy.contains('Войти').click();
     cy.location().should((loc) => {
       expect(loc.href).to.eq('http://localhost:4000/');
@@ -281,8 +285,8 @@ describe('проверяем создание заказа незалогине�
   });
 
   it('успешно оформляется',()=>{
-    cy.contains('E-mail').type(user.login.email);
-    cy.contains('Пароль').type(user.login.password);
+    cy.get(`input[name=email]`).type(user.login.email);
+    cy.get(`input[name=password]`).type(user.login.password);
     cy.contains('Войти').click();
     cy.contains('Оформить заказ').click();
     cy.get(`[data-testId=modal_window]`)

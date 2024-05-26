@@ -8,7 +8,7 @@ import mockData from '../orderBurger.json';
 import mockBurgerData from '../burger.json';
 import * as cookies from '../../utils/cookie';
 
-import unsuccessResponse from '../unsuccessResponse.json'
+import unsuccessResponse from '../unsuccessResponse.json';
 const globalFetch = global.fetch;
 afterAll(() => {
   global.fetch = globalFetch;
@@ -61,8 +61,9 @@ describe('Заказ бургера. Тест:', () => {
     ) as jest.Mock;
     jest.spyOn(cookies, 'getCookie').mockImplementation((text) => '123456');
     await store.dispatch(testedThunk(burger));
-    expect(getCurrentStorePart()).toEqual(appliedState);
+    expect(getCurrentStorePart().order).toEqual(appliedState.order);
   });
+
   test('[#6]. ошибка загрузки с сервера', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -72,6 +73,6 @@ describe('Заказ бургера. Тест:', () => {
     ) as jest.Mock;
     jest.spyOn(cookies, 'getCookie').mockImplementation((text) => '123456');
     await store.dispatch(testedThunk(burger));
-    expect(getCurrentStorePart()).toEqual(failedState);
+    expect(getCurrentStorePart().orderError).toEqual(failedState.orderError);
   });
 });

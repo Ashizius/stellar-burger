@@ -7,7 +7,7 @@ import * as sliceApi from '../../services/slices/ordersListSlice';
 import mockData from '../feeds.json';
 import * as cookies from '../../utils/cookie';
 
-import unsuccessResponse from '../unsuccessResponse.json'
+import unsuccessResponse from '../unsuccessResponse.json';
 const globalFetch = global.fetch;
 afterAll(() => {
   global.fetch = globalFetch;
@@ -30,6 +30,7 @@ describe('Список заказов. Тест:', () => {
     const newState = reducer(initialState, testedThunk.pending(''));
     expect(newState).toEqual(loadingState);
   });
+
   test('[#2]. Результат запроса', async () => {
     const newState = reducer(
       loadingState,
@@ -37,6 +38,7 @@ describe('Список заказов. Тест:', () => {
     );
     expect(newState).toEqual(appliedState);
   });
+
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
@@ -44,6 +46,7 @@ describe('Список заказов. Тест:', () => {
     );
     expect(newState).toEqual(failedState);
   });
+
   test('[#4]. успешный диспатч', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -58,6 +61,7 @@ describe('Список заказов. Тест:', () => {
     expect(ordersError).toBe(null);
     expect(orders).toEqual(appliedState.orders);
   });
+
   test('[#5]. ошибка загрузки с сервера', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({

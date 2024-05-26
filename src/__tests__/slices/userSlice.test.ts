@@ -7,7 +7,7 @@ import * as sliceApi from '../../services/slices/userSlice';
 import mockData from '../user.json';
 import * as cookies from '../../utils/cookie';
 
-import unsuccessResponse from '../unsuccessResponse.json'
+import unsuccessResponse from '../unsuccessResponse.json';
 const globalFetch = global.fetch;
 const globallocalStorage = global.localStorage;
 afterAll(() => {
@@ -50,6 +50,7 @@ describe('Получение пользователя по токену. Тес�
     expect(isSending).toBe(true);
     await pendingThunk;
   });
+
   test('[#2]. Результат запроса', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -62,6 +63,7 @@ describe('Получение пользователя по токену. Тес�
     expect(isSending).toBe(false);
     expect(data).toEqual(mockData.response.user);
   });
+
   test('[#3]. Ошибка запроса', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -75,6 +77,7 @@ describe('Получение пользователя по токену. Тес�
     expect(data).toBe(null);
     expect(authUserError).toEqual(unsuccessResponse);
   });
+
   test('[#4]. Отсутствие токена', async () => {
     jest.spyOn(cookies, 'getCookie').mockImplementation((text) => undefined);
     global.localStorage = Object.assign({}, global?.localStorage, {
@@ -174,6 +177,7 @@ describe('логин пользователя. Тест:', () => {
     );
     expect(newState).toEqual(loadingState);
   });
+
   test('[#2]. Результат запроса', async () => {
     const newState = reducer(
       loadingState,
@@ -181,6 +185,7 @@ describe('логин пользователя. Тест:', () => {
     );
     expect(newState).toEqual(appliedState);
   });
+
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
@@ -188,6 +193,7 @@ describe('логин пользователя. Тест:', () => {
     );
     expect(newState).toEqual(failedState);
   });
+
   test('[#4]. успешный диспатч', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -202,6 +208,7 @@ describe('логин пользователя. Тест:', () => {
     expect(isSending).toBe(false);
     expect(formError).toBe(null);
   });
+
   test('[#5]. ошибка загрузки с сервера', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -237,6 +244,7 @@ describe('обновление пользователя. Тест:', () => {
     );
     expect(newState).toEqual(loadingState);
   });
+
   test('[#2]. Результат запроса', async () => {
     const newState = reducer(
       loadingState,
@@ -244,6 +252,7 @@ describe('обновление пользователя. Тест:', () => {
     );
     expect(newState).toEqual(appliedState);
   });
+
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
@@ -251,6 +260,7 @@ describe('обновление пользователя. Тест:', () => {
     );
     expect(newState).toEqual(failedState);
   });
+
   test('[#4]. успешный диспатч', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -265,6 +275,7 @@ describe('обновление пользователя. Тест:', () => {
     expect(isSending).toBe(false);
     expect(formError).toBe(null);
   });
+
   test('[#5]. ошибка загрузки с сервера', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -298,6 +309,7 @@ describe('выход пользователя. Тест:', () => {
     const newState = reducer(initialState, testedThunk.pending(''));
     expect(newState).toEqual(loadingState);
   });
+
   test('[#2]. Результат запроса', async () => {
     const newState = reducer(
       loadingState,
@@ -305,6 +317,7 @@ describe('выход пользователя. Тест:', () => {
     );
     expect(newState).toEqual(appliedState);
   });
+
   test('[#3]. Ошибка запроса', () => {
     const newState = reducer(
       loadingState,
@@ -312,6 +325,7 @@ describe('выход пользователя. Тест:', () => {
     );
     expect(newState).toEqual(failedState);
   });
+
   test('[#4]. успешный диспатч', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -326,6 +340,7 @@ describe('выход пользователя. Тест:', () => {
     expect(isSending).toBe(false);
     expect(formError).toBe(null);
   });
+
   test('[#5]. ошибка загрузки с сервера', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
