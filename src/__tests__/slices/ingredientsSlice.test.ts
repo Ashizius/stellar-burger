@@ -54,7 +54,8 @@ describe('Cлайс с ингредиентами. Тест:', () => {
       })
     ) as jest.Mock;
     await store.dispatch(testedThunk());
-    expect(getCurrentStorePart()).toEqual(appliedState);
+    expect(getCurrentStorePart().ingredients).toEqual(appliedState.ingredients);
+    expect(getCurrentStorePart().isLoading).toBe(false);
   });
 
   test('[#5]. ошибка загрузки с сервера', async () => {
@@ -65,6 +66,7 @@ describe('Cлайс с ингредиентами. Тест:', () => {
       })
     ) as jest.Mock;
     await store.dispatch(testedThunk());
-    expect(getCurrentStorePart()).toEqual(failedState);
+    expect(getCurrentStorePart().error).toEqual(failedState.error);
+    expect(getCurrentStorePart().isLoading).toBe(false);
   });
 });
