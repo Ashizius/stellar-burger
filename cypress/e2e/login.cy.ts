@@ -1,10 +1,9 @@
 import ingredients from '../fixtures/ingredients.json';
 import user from '../fixtures/user.json';
 import feeds from '../fixtures/feeds.json';
-import { testURL, pages, elements } from '../fixtures/testConstants.json';
-import { deleteCookie, getCookie, setCookie } from '../../src/utils/cookie';
+import { testURL, pages } from '../fixtures/testConstants.json';
+import { deleteCookie } from '../../src/utils/cookie';
 
-const newUser = { name: 'nameNameName', email: 'PasswordPassword987654321' };
 beforeEach(() => {
   cy.intercept('GET', 'api/ingredients', {
     statusCode: 200,
@@ -20,7 +19,7 @@ beforeEach(() => {
 
 describe('проверяем переброс на логин', () => {
   it('не перебрасывает со стартовой', () => {
-    cy.visit('http://localhost:4000');
+    cy.visit(testURL);
     cy.location().should((loc) => {
       expect(loc.href).to.eq(testURL);
     });
