@@ -2,7 +2,8 @@ import ingredients from '../fixtures/ingredients.json';
 import user from '../fixtures/user.json';
 import orderBurger from '../fixtures/orderBurger.json';
 import feeds from '../fixtures/feeds.json';
-import { deleteCookie, getCookie, setCookie } from '../../src/utils/cookie';
+import { testURL, pages, elements } from '../fixtures/testConstants.json';
+import { deleteCookie, setCookie } from '../../src/utils/cookie';
 
 const newUser = {
   name: 'nameNameName',
@@ -20,53 +21,18 @@ beforeEach(() => {
     ok: true,
     body: user.response
   });
-  cy.intercept('POST', 'api/auth/register', {
-    statusCode: 200,
-    ok: true,
-    body: user.response
-  });
-  cy.intercept('POST', 'api/auth/login', {
-    statusCode: 200,
-    ok: true,
-    body: user.response
-  });
-  cy.intercept('POST', 'api/auth/logout', {
-    statusCode: 200,
-    ok: true,
-    body: user.response
-  });
-  cy.intercept('PATCH', 'api/auth/PATCH', {
-    statusCode: 200,
-    ok: true,
-    body: { ...user.response, user: newUser }
-  });
-  cy.intercept('POST', 'api/orders', {
-    statusCode: 200,
-    ok: true,
-    body: orderBurger
-  });
-  cy.intercept('GET', 'api/orders/all', {
-    statusCode: 200,
-    ok: true,
-    body: feeds
-  });
-  cy.intercept('GET', 'api/orders/408702', {
-    statusCode: 200,
-    ok: true,
-    body: feeds
-  });
-  cy.intercept('GET', 'api/orders', {
-    statusCode: 200,
-    ok: true,
-    body: feeds
-  });
 });
 
 describe('проверка профиля', () => {
   beforeEach(() => {
+    cy.intercept('PATCH', 'api/auth/user', {
+      statusCode: 200,
+      ok: true,
+      body: { ...user.response, user: newUser }
+    });
     setCookie('accessToken', '123456');
     localStorage.setItem('refreshToken', '654321');
-    cy.visit('http://localhost:4000/profile');
+    cy.visit(testURL + pages.profile);
   });
 
   afterEach(() => {
@@ -88,9 +54,19 @@ describe('проверка профиля', () => {
 
 describe('проверка списка заказов', () => {
   beforeEach(() => {
+    cy.intercept('GET', 'api/orders', {
+      statusCode: 200,
+      ok: true,
+      body: feeds
+    });
+    cy.intercept('GET', 'api/orders/408702', {
+      statusCode: 200,
+      ok: true,
+      body: feeds
+    });
     setCookie('accessToken', '123456');
     localStorage.setItem('refreshToken', '654321');
-    cy.visit('http://localhost:4000/profile/orders');
+    cy.visit(testURL + pages.orders);
   });
 
   afterEach(() => {
@@ -106,21 +82,23 @@ describe('проверка списка заказов', () => {
 
   it('кликаем по заказу', () => {
     cy.contains(feeds.orders[0].name).click();
-    cy.get(`[data-testId=modal_window]`).should('exist');
-    cy.get(`[data-testId=modal_window]`).contains(feeds.orders[0].name);
+    cy.get(`[data-testId=${elements.modalWindowId}]`).should('exist');
+    cy.get(`[data-testId=${elements.modalWindowId}]`).contains(
+      feeds.orders[0].name
+    );
   });
 
   it('закрывает модалку по кнопке', () => {
     cy.contains(feeds.orders[0].name).click();
-    cy.get(`[data-testId=modal_window]`).should('exist');
-    cy.get(`[data-testId=modal_window-close_button]`).click();
-    cy.get(`[data-testId=modal_window]`).should('not.exist');
+    cy.get(`[data-testId=${elements.modalWindowId}]`).should('exist');
+    cy.get(`[data-testId=${elements.modalCloseTag}]`).click();
+    cy.get(`[data-testId=${elements.modalWindowId}]`).should('not.exist');
   });
 
   it('закрывает модалку по оверлею', () => {
     cy.contains(feeds.orders[0].name).click();
-    cy.get(`[data-testId=modal_window]`).should('exist');
-    cy.get(`[data-testId=modal_window-overlay]`).click({ force: true });
-    cy.get(`[data-testId=modal_window]`).should('not.exist');
+    cy.get(`[data-testId=${elements.modalWindowId}]`).should('exist');
+    cy.get(`[data-testId=${elements.modalOverlayTag}]`).click({ force: true });
+    cy.get(`[data-testId=${elements.modalWindowId}]`).should('not.exist');
   });
 });
