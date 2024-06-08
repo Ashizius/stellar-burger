@@ -49,7 +49,6 @@ const App = () => {
     navigate(backgroundLocation);
   }, [backgroundLocation]);
   const lastlink = location.pathname.split('/');
-
   return (
     <div className={styles.app}>
       <AppHeader />

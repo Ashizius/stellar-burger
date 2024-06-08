@@ -28,7 +28,8 @@ export const getUserThunk = createAsyncThunk(
   async (_, { dispatch }) => {
     if (getCookie('accessToken')) {
       dispatch(setSending(true));
-      getUserApi()
+      dispatch(setUserAuthError(null));
+      return getUserApi()
         .then((data) => {
           dispatch(setUser(data.user));
         })
@@ -42,6 +43,7 @@ export const getUserThunk = createAsyncThunk(
         });
     } else {
       dispatch(setAuthChecked());
+      dispatch(setUserAuthError(null));
     }
   }
 );

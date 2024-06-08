@@ -16,7 +16,7 @@ export interface UserState {
   formError: SerializedError | null;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   isSending: false,
   isAuthChecked: false,
   data: null,
@@ -37,7 +37,10 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<TUser>) => {
       state.data = action.payload;
     },
-    setUserAuthError: (state, action: PayloadAction<SerializedError>) => {
+    setUserAuthError: (
+      state,
+      action: PayloadAction<SerializedError | null>
+    ) => {
       state.authUserError = action.payload;
     },
     logout: (state) => {
@@ -61,6 +64,7 @@ const userSlice = createSlice({
     builder.addCase(registerUserThunk.rejected, (state, action) => {
       state.isSending = false;
       state.formError = action.error;
+      state.data = null;
     });
     builder.addCase(registerUserThunk.fulfilled, (state, action) => {
       state.isSending = false;
@@ -75,6 +79,7 @@ const userSlice = createSlice({
     builder.addCase(loginUserThunk.rejected, (state, action) => {
       state.isSending = false;
       state.formError = action.error;
+      state.data = null;
     });
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
       state.isSending = false;
@@ -99,8 +104,9 @@ const userSlice = createSlice({
       state.formError = null;
     });
     builder.addCase(logoutThunk.rejected, (state, action) => {
-      state.isSending = false;
       state.formError = action.error;
+      state.isSending = false;
+      state.data = null;
     });
     builder.addCase(logoutThunk.fulfilled, (state) => {
       state.isSending = false;

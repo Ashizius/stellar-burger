@@ -1,0 +1,20 @@
+{
+  "user": {
+    "email": "mail@mail.com",
+    "name": "nameName"
+  },
+  "login": {
+    "email": "mail@mail.com",
+    "name": "nameName",
+    "password": "passwordPassword1337"
+  },
+  "response": {
+    "user": {
+        "email": "mail@mail.com",
+        "name": "nameName"
+      },
+    "success": true,
+    "refreshToken": "654321",
+    "accessToken": "123456"
+  }
+}
